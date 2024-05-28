@@ -1,0 +1,15 @@
+{
+    "name": "LiveBall",
+    "version": "1.0.0",
+    "description": "Live NBA Scores",
+    "manifest_version": 3,
+    "author": "Yahav Corcos",
+    "action":{
+        "default_popup": "index.html",
+        "default_title": "Live NBA Scores",
+        "default_icon": {
+            "16":"img/basketball.png",
+            "128": "img/basketball.png"
+        }
+    }
+}
