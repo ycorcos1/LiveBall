@@ -1,77 +1,88 @@
-async function getData() {
-  const today = new Date();
-  const month = today.getMonth() + 1;
-  const year = today.getFullYear();
-  const day = today.getDate() + 1;
+const API_URL = "https://v2.nba.api-sports.io/games";
+const API_HEADERS = {
+  "x-rapidapi-host": "v2.nba.api-sports.io",
+  "x-rapidapi-key": "b07396cd9122b8302112d6ce1a746e8e",
+};
 
-  const URL = `https://v2.nba.api-sports.io/games?date=${year}-${
-    month <= 9 ? "0" + month : month
-  }-${day <= 9 ? "0" + day : day}`;
-  const res = await fetch(URL, {
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": "v2.nba.api-sports.io",
-      "x-rapidapi-key": "b07396cd9122b8302112d6ce1a746e8e",
-    },
-  });
-  const data = await res.json();
-  displayDate(month, day - 1, year);
-  displayData(data.response);
+async function getData() {
+  try {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+    const day = String(today.getDate() + 1).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+    const response = await fetch(`${API_URL}?date=${formattedDate}`, {
+      method: "GET",
+      headers: API_HEADERS,
+    });
+
+    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+
+    const data = await response.json();
+    displayDate(month, day - 1, year);
+    displayData(data.response);
+  } catch (error) {
+    console.error("Error fetching NBA data:", error);
+    document.getElementById("display").innerHTML = `<p class="notyet">Failed to load game data. Please try again later.</p>`;
+  }
 }
 
 function displayDate(month, day, year) {
-  let date = `${month} / ${day} / ${year}`;
-  document.getElementById("date").innerHTML = date;
+  document.getElementById("date").innerHTML = `${month} / ${day} / ${year}`;
 }
 
-// function displayData(data) {
-//   let i = 0;
-//   while (i < data.length) {
-//     handleDisplayData(data[i]);
-//     i++;
-//   }
-// }
-
-// Blackbox AI code
 function displayData(data) {
-  // clear existing divs
-  document.getElementById("display").innerHTML = "";
-  if (Array.isArray(data)) {
-    let i = 0;
-    while (i < data.length) {
-      handleDisplayData(data[i]);
-      i++;
-    }
-  } else {
-    console.error("Unexpected data format:", data);
+  const displayDiv = document.getElementById("display");
+  displayDiv.innerHTML = "";
+
+  if (!Array.isArray(data) || data.length === 0) {
+    displayDiv.innerHTML = `<p class="notyet">No games scheduled today.</p>`;
+    return;
   }
+
+  data.forEach(handleDisplayData);
 }
 
 function handleDisplayData(data) {
-  let awayTeam = data.teams.visitors.name;
-  let homeTeam = data.teams.home.name;
-  let period = data.periods.current;
-  let time = data.status.clock;
-  let awayTeamScore = data.scores.visitors.points;
-  let homeTeamScore = data.scores.home.points;
-  let status = data.status.long;
+  const awayTeam = data.teams.visitors.name;
+  const homeTeam = data.teams.home.name;
+  const period = data.periods.current || "—";
+  const time = data.status.clock || "--:--";
+  const awayTeamScore = data.scores.visitors.points ?? 0;
+  const homeTeamScore = data.scores.home.points ?? 0;
+  const status = data.status.long;
 
-  let team = `${awayTeam} @ ${homeTeam}`;
-  let score = `${awayTeamScore} - ${homeTeamScore}`;
+  const teamInfo = `${awayTeam} @ ${homeTeam}`;
+  const scoreInfo = `${awayTeamScore} - ${homeTeamScore}`;
+  const displayDiv = document.getElementById("display");
 
-  let div = document.createElement("div");
+  const gameDiv = document.createElement("div");
+  gameDiv.classList.add("game-card");
+
   if (status === "Scheduled") {
-    div.innerHTML = `<b class="team">${team}</b><br><p class="notyet">Has Not Started</p>`;
+    gameDiv.innerHTML = `
+      <p class="team">${teamInfo}</p>
+      <p class="notyet">Game Starts Soon</p>
+    `;
   } else if (status === "In Play") {
-    div.innerHTML = `<b class="team">${team}</b><br><p class="period">Q${period}\t${
-      time === null ? `--:--` : time
-    }</p><br><p class="score">${score}</p><br><br>`;
+    gameDiv.innerHTML = `
+      <span class="live-game">Live</span>
+      <p class="team">${teamInfo}</p>
+      <p class="period">Q${period} - ${time}</p>
+      <p class="score">${scoreInfo}</p>
+    `;
   } else if (status === "Finished") {
-    div.innerHTML = `<b class="team">${team}</b><br><p class="period">Game Ended</p><br><p class="score">${score}</p><br><br>`;
+    gameDiv.innerHTML = `
+      <span class="finished">Finished</span>
+      <p class="team">${teamInfo}</p>
+      <p class="score">${scoreInfo}</p>
+    `;
   } else {
-    div.innerHTML = "No Games Scheduled";
+    gameDiv.innerHTML = `<p class="notyet">No Games Scheduled</p>`;
   }
-  document.getElementById("display").appendChild(div);
+
+  displayDiv.appendChild(gameDiv);
 }
 
 getData();

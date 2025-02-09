@@ -1,121 +1,182 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&family=Roboto:wght@300;400;500&display=swap');
+
+/* Global Styles */
 body {
-    background-color: #121212;
-    color: #fff;
-    font-family: 'Roboto', sans-serif;
-    margin: 0.5rem;
-    transition: background-color 0.3s ease;
-}
-
-.dark-mode body {
-    background-color: #1a1a1a;
-}
-
-.container {
-    text-align: center;
-    margin-top: 50px;
-    border: 1px solid #90a4ae;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    width: auto;
-    min-width: 400px;
-    max-width: 800px;
-    margin: auto;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-
-    background-color: #263238;
-    /* background-color: #1b2328; */
-}
-
-.dark-mode .container {
-    background-color: #37474f;
-}
-
-.title {
-    font-size: 30px;
-    color: #64b5f6;
-    transition: color 0.3s ease;
-    padding: 10px;
+    background: #0A0F1E; /* Dark navy sports theme */
+    color: #E1E1E1;
+    font-family: 'Oswald', sans-serif;
     margin: 0;
-    font-family: monospace ;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    transition: background 0.3s ease;
+
+    width: 350px; /* Adjust this based on the extension popup size */
+    height: 500px; /* Keep it compact */
+    overflow-y: auto; /* Allow scrolling if content is too large */
 }
 
-.dark-mode .title {
-    color: #90a4ae;
+/* Dark Mode */
+.dark-mode body {
+    background: #080D18;
 }
 
+/* Main Container */
+.container {
+    background: rgba(20, 30, 50, 0.95);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 850px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+
+    width: 350px; /* Adjust this based on the extension popup size */
+    height: 500px; /* Keep it compact */
+    overflow-y: auto; /* Allow scrolling if content is too large */
+}
+
+/* Title Styling */
+.title {
+    font-size: 36px;
+    font-weight: 600;
+    color: #FFD700; /* Gold NBA-like Title */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+/* Date */
+.date {
+    font-size: 18px;
+    font-weight: 400;
+    color: #B0BEC5;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+/* Game Display Section */
 .display {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #1b2328;
-    /* background-color: #263238; */
+    gap: 20px;
+    padding-top: 15px;
 }
 
-.date {
-    margin: 0;
-    font-size: 15px;
-    /* font-size: medium; */
-    font-family: monospace;
-}
-
-.team {
-    margin: 0px;
-    margin-bottom: 5px;
-    color: #64b5f6;
-    font-weight: bold;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 18px;
-}
-
-.period {
-    margin: 0px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    color: white;
-    font-size: 15px;
-}
-
-.score {
-    margin: 0px;
-    color: #90a4ae;
-    font-size: 25px;
-}
-
-.notyet {
-    margin: 0px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    color: #90a4ae;
-    font-size: 15px;
-}
-
-div {
-    background-color: #1b2328;
-    /* background-color: #263238; */
-    
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    width: 180px;
+/* Game Cards */
+.game-card {
+    background: linear-gradient(145deg, #1C2940, #23324E);
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    
+        width: 90%; /* Make sure cards fit within the popup */
+        max-width: 300px; /* Prevents it from being too big */
+        padding: 12px;
+    
+    
 }
 
-.dark-mode div {
-    background-color: #37474f;
+/* Hover Effect */
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
 }
 
+/* Game Teams */
+.team {
+    margin: 0;
+    color: #64B5F6; /* Blue accent for team names */
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+
+    padding-right: 40px; /* Leaves space for the LIVE badge */
+    display: inline-block;
+    text-align: center;
+}
+
+/* Game Status */
+.period {
+    margin: 5px 0;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Score Styling */
+.score {
+    margin: 10px 0;
+    color: #FFD700;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Not Yet Started */
+.notyet {
+    margin: 5px 0;
+    color: #B0BEC5;
+    font-size: 16px;
+    font-style: italic;
+}
+
+/* Live Game Indicator */
+.live-game {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #D50000;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: #D50000;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    z-index: 2; /* Ensures it stays on top */
+}
+
+/* Finished Game Status */
+.finished {
+    background: #4CAF50;
+    color: white;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+/* Responsive Design */
 @media screen and (max-width: 600px) {
     .title {
-        font-size: 24px;
+        font-size: 28px;
     }
 
-    div {
+    .game-card {
         width: 90%;
+        max-width: 320px;
     }
 }
