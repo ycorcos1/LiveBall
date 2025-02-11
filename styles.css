@@ -16,7 +16,7 @@ body {
     text-align: center;
     transition: background 0.3s ease;
 
-    width: 350px; /* Adjust this based on the extension popup size */
+    width: 400px; /* Adjust this based on the extension popup size */
     height: 500px; /* Keep it compact */
     overflow-y: auto; /* Allow scrolling if content is too large */
 }
